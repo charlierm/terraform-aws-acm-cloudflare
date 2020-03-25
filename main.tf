@@ -9,6 +9,12 @@ data "cloudflare_zones" "selected_zone" {
   }
 }
 
+provider "cloudflare" {
+  version = "~> 2.0"
+  email   = var.cf_email
+  api_key = var.cf_api_key
+}
+
 resource "aws_acm_certificate" "default" {
   domain_name               = var.domain_name
   subject_alternative_names = local.subject_alternative_names
