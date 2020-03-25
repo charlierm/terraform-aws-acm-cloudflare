@@ -15,12 +15,6 @@ variable "validation_record_ttl" {
   description = "Cloudflare time-to-live for validation records"
 }
 
-variable "allow_validation_record_overwrite" {
-  default     = true
-  type        = bool
-  description = "Allow Cloudflare record creation to overwrite existing records"
-}
-
 variable "tags" {
   default     = {}
   type        = map(string)
@@ -28,7 +22,8 @@ variable "tags" {
 }
 
 variable "region" {
-  default = ""
+  default = "us-east-1"
+  description = "Aws region to  ACM certificate"
 }
 
 # Configure the Cloudflare Provider
