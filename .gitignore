@@ -1,9 +1,12 @@
 #  Local .terraform directories
+.idea
 **/.terraform/*
-
+.terraform
 # .tfstate files
 *.tfstate
 *.tfstate.*
 
 # .tfvars files
 *.tfvars
+
+override.tf
