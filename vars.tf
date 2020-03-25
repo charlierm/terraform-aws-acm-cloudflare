@@ -3,12 +3,6 @@ variable "domain_name" {
   description = "Primary certificate domain name"
 }
 
-variable "subject_alternative_names" {
-  default     = []
-  type        = list(string)
-  description = "Subject alternative domain names"
-}
-
 variable "validation_record_ttl" {
   default     = 60
   type        = number
@@ -27,7 +21,11 @@ variable "region" {
 }
 
 # Configure the Cloudflare Provider
-variable "cf_email" {}
+variable "cf_email" {
+  description = "The email associated with the account. This can also be specified with the CLOUDFLARE_EMAIL shell environment variable."
+}
 
-variable "cf_api_key" {}
+variable "cf_api_key" {
+  description = "The Cloudflare API key. This can also be specified with the CLOUDFLARE_API_KEY shell environment variable."
+}
 

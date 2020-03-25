@@ -1,3 +1,7 @@
+locals {
+  zone_id = lookup(data.cloudflare_zones.selected_zone.zones[0], "id")
+  subject_alternative_names = ["*.${var.domain_name}"]
+}
 
 provider "cloudflare" {
   version = "~> 2.0"
@@ -9,6 +13,7 @@ provider "aws" {
   version = "~> 2.0"
   region  = var.region
 }
+
 resource "aws_acm_certificate" "default" {
   domain_name               = var.domain_name
   subject_alternative_names = local.subject_alternative_names
@@ -32,12 +37,9 @@ data "cloudflare_zones" "selected_zone" {
   }
 }
 
-locals {
-  zone_id = lookup(data.cloudflare_zones.selected_zone.zones[0], "id")
-  subject_alternative_names = ["*.${var.domain_name}"]
-}
 
 resource "cloudflare_record" "validation" {
+  # todo support to alternates domains names
   count    = length(local.subject_alternative_names)
 
   zone_id = local.zone_id
