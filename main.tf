@@ -3,15 +3,10 @@ locals {
   subject_alternative_names = ["*.${var.domain_name}"]
 }
 
-provider "cloudflare" {
-  version = "~> 2.0"
-  email   = var.cf_email
-  api_key = var.cf_api_key
-}
-
-provider "aws" {
-  version = "~> 2.0"
-  region  = var.region
+data "cloudflare_zones" "selected_zone" {
+  filter {
+   name   = var.domain_name
+  }
 }
 
 resource "aws_acm_certificate" "default" {
@@ -31,13 +26,6 @@ resource "aws_acm_certificate" "default" {
   )
 }
 
-data "cloudflare_zones" "selected_zone" {
-  filter {
-   name   = var.domain_name
-  }
-}
-
-
 resource "cloudflare_record" "validation" {
   # todo support to alternates domains names
   count    = length(local.subject_alternative_names)
@@ -49,7 +37,6 @@ resource "cloudflare_record" "validation" {
 }
 
 resource "aws_acm_certificate_validation" "default" {
-
   certificate_arn = aws_acm_certificate.default.arn
 
   validation_record_fqdns = cloudflare_record.validation.*.hostname
